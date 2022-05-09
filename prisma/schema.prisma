@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,10 +8,18 @@ datasource db {
 }
 
 // Tabelas: No plural e em letra minúscula como boa prática
-// Model é para crição de tabelas e relacionamentos ->  
+// Model é para crição de tabelas e relacionamentos ->
+
+// Universal unic ID -> A string with a unique identifier
 
 model Feedback {
+  id String @id @default(uuid())
+
+  type String
+
+  comment String
+
+  screenshot String?
 
   @@map("feedbacks")
-
 }

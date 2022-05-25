@@ -1,3 +1,4 @@
+import { MailAdapter } from "../adapters/mail-adapter";
 import { FeedbacksRepository } from "../repositories/feedbacks-repository";
 
 interface SubmitFeedbackUseCaseRequest {
@@ -7,7 +8,10 @@ interface SubmitFeedbackUseCaseRequest {
 }
 
 export class SubmitFeedbackUseCase {
-  constructor(private feedbacksRepository: FeedbacksRepository) {
+  constructor(
+    private feedbacksRepository: FeedbacksRepository,
+    private mailAdapter: MailAdapter
+  ) {
     this.feedbacksRepository = feedbacksRepository;
   }
 
@@ -17,6 +21,14 @@ export class SubmitFeedbackUseCase {
       type,
       comment,
       screenshot,
+    });
+    await this.mailAdapter.sendMail({
+      subject: "Novo Feedback",
+      body: [
+        `<h1>Novo feedback</h1>`,
+        `<p>${type}</p>`,
+        `<p>${comment}</p>`,
+      ].join("\n"),
     });
   }
 }
